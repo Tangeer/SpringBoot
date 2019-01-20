@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--需要加上标签，不然不能引入标签-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--其中，th:text="" 是Thymeleaf的一个属性，用于文本的显示；-->
+<p th:text="${msg}"></p>
+<span th:text="${user.nick}">x</span>
+<span th:text="${user.phone}">137xxxxxxxx</span>
+<span th:text="${user.email}">xxx@xx.com</span>
+<span th:text="${user.address}">北京.xxx</span>
+
+<a href="info.html" th:href="@{'http://localhost:8080/boot/user/info?id='+${user.id}}">查看</a>
+<!--｜｜对于多个参数很方便-->
+<a href="info.html" th:href="@{|http://localhost:8080/boot/user/info?id=${user.id}&phone=${user.phone}|}">查看</a>
+<br>
+<a href="info.html" th:href="@{'user/info?id='+${user.id}}">查看</a>
+
+
+<!--（项目的上下文名会被自动添加）-->
+<a href="info.html" th:href="@{'/user/info?id='+${user.id}}">查看</a>
+
+<h1>演示list</h1>
+<p th:each="user : ${list}">
+    <span th:text="${userStat.count}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.nick}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.phone}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.email}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.address}"></span>
+</p>
+<h1>演示map</h1>
+<p th:each="user : ${map}">
+    <span th:text="${user.key}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.value.nick}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.value.phone}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.value.email}"></span>&nbsp;&nbsp;&nbsp;
+    <span th:text="${user.value.address}"></span>
+</p>
+<h1>if</h1>
+<span th:if="${sex eq '1'}">男</span>
+<span th:if="${sex eq '0'}">女</span>
+
+<h1>unless</h1>
+<span th:unless="${sex eq '1'}">男</span>
+<span th:unless="${sex eq '0'}">女</span>
+
+<h1>switch</h1>
+<div th:switch="${sex}">
+    <p th:case="1">性别：男</p>
+    <p th:case="2">性别：女</p>
+    <p th:case="*">性别：未知</p>
+</div>
+
+<h1>引入图片</h1>
+<img th:src="@{/image/img.jpg}"/>
+
+</br>
+1、<input type="text" id="nick" name="nick" th:text="${user.nick}"><br>
+
+2、<input type="text" id="tuserId" name="userId" th:value="${user.id}"><br>
+
+<input type="hidden" id="huserId" name="userId" th:value="${user.id}"><br>
+   2 和3 效果一样<br>
+3、<input type="text" id="userId" name="userId" th:attr="value=${user.id}" ><br>
+
+<input type="button" value="点我" th:onclick="clickMe()"><br>
+
+<script>
+    function clickMe() {
+        alert("Hello,谢谢你点了我");
+    }
+
+</script>
+
+
+设置样式
+<div th:style="'display : none'">SBSBSBSBSBSBBS</div>
+<div th:style="'display : block'">SBSBSBSBSBSBBS</div><br>
+
+设置请求方法，比如：<br>
+<form id="login" th:action="@{/login}" th:method="post">......</form>
+
+<h3>内联文本</h3>
+<div th:text="${user.phone}"></div>
+<div th:inline="text">[[${user.phone}]]</div>
+<h3>内联脚本</h3>
+<script th:inline="javascript" type="text/javascript">
+    var user = [[${user.phone}]];
+    alert(user);
+</script>
+<script th:inline="javascript" type="text/javascript">
+    var msg  = "Hello," + [[${user.phone}]];
+    alert(msg);
+</script>
+<h1>request and session</h1>
+<span th:text="${#request.getAttribute('name')}">
+</span>
+<span th:text="${#session.getAttribute('address')}">
+</span>
+<span th:inline="text">
+    [[${#session.id}]]
+    [[${#session.lastAccessedTime}]]
+</span>
+
+<h1>#dates: java.util.Date对象的实用方法，</h1>
+<span th:text="${#dates.format(curDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
+<span th:text="${#strings.substring(str,1,10)}"></span>
+
+</body>
+</html>

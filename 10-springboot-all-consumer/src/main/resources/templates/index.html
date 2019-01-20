@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--需要加上标签，不然不能引入标签-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 基本的表格</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body style="margin-left: 100px;margin-right: 100px;">
+<p style="margin-top: 0px;">
+    <a th:href="@{/user/toAddUser}" style="float: right">添加用户</a>
+</p>
+
+<table class="table">
+    <caption>基本的表格布局</caption>
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>昵称</th>
+        <th>电话</th>
+        <th>住址</th>
+        <th>邮件</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${userList}">
+        <td th:text="${userStat.count}">Tanmay</td>
+        <td th:text="${user.nick}">Bangalore</td>
+        <td th:text="${user.phone}">Bangalore</td>
+        <td th:text="${user.address}">Bangalore</td>
+        <td th:text="${user.email}">Bangalore</td>
+        <td>
+            <a th:href="@{|/user/toUpdate?id=${user.id}|}">修改</a>
+            <a th:href="@{|/user/delete?id=${user.id}|}">删除</a>
+        </td>
+    </tr>
+
+    <tr th:style="'text-align:center;'">
+        <td colspan="6">
+            <span th:if="${curPage <= 1}">
+                首页
+                上一页
+            </span>
+            <span th:if="${curPage>1}">
+                <a th:href="@{/index}">首页</a>
+                <a th:href="@{|/index?curPage=${curPage-1}|}">上一页</a>
+            </span>
+            <span th:if="${curPage >= totalPages}">
+                下一页
+                尾页
+            </span>
+            <span th:if="${curPage < totalPages}">
+                <a th:href="@{|/index?curPage=${curPage+1}|}">下一页</a>
+                <a th:href="@{|/index?curPage=${totalPages}|}">尾页</a>
+            </span>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+</body>
+</html>

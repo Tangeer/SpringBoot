@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longrise.springboot.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.longrise.springboot.model.Student">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stuName" jdbcType="VARCHAR" property="stuname" />
+    <result column="stuPwd" jdbcType="VARCHAR" property="stupwd" />
+    <result column="stuSex" jdbcType="VARCHAR" property="stusex" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, stuName, stuPwd, stuSex
+  </sql>
+  <!--查询所有学生-->
+  <select id="selectAllStudent" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from stu
+  </select>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from stu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from stu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.longrise.springboot.model.Student">
+    insert into stu (id, stuName, stuPwd, 
+      stuSex)
+    values (#{id,jdbcType=INTEGER}, #{stuname,jdbcType=VARCHAR}, #{stupwd,jdbcType=VARCHAR}, 
+      #{stusex,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.longrise.springboot.model.Student">
+    insert into stu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stuname != null">
+        stuName,
+      </if>
+      <if test="stupwd != null">
+        stuPwd,
+      </if>
+      <if test="stusex != null">
+        stuSex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stuname != null">
+        #{stuname,jdbcType=VARCHAR},
+      </if>
+      <if test="stupwd != null">
+        #{stupwd,jdbcType=VARCHAR},
+      </if>
+      <if test="stusex != null">
+        #{stusex,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.longrise.springboot.model.Student">
+    update stu
+    <set>
+      <if test="stuname != null">
+        stuName = #{stuname,jdbcType=VARCHAR},
+      </if>
+      <if test="stupwd != null">
+        stuPwd = #{stupwd,jdbcType=VARCHAR},
+      </if>
+      <if test="stusex != null">
+        stuSex = #{stusex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.longrise.springboot.model.Student">
+    update stu
+    set stuName = #{stuname,jdbcType=VARCHAR},
+      stuPwd = #{stupwd,jdbcType=VARCHAR},
+      stuSex = #{stusex,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
